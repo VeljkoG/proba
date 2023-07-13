@@ -1,3 +1,8 @@
+// Funkcija za proveru podrške za navigator.userAgentData
+function isUserAgentDataSupported() {
+  return navigator.userAgentData && navigator.userAgentData.brands && Array.isArray(navigator.userAgentData.brands);
+}
+
 // Funkcija za učitavanje JSON fajla
 function loadJSON(url, callback) {
   var xobj = new XMLHttpRequest();
@@ -72,3 +77,10 @@ loadJSON('kviz.json', function (response) {
   var quizData = JSON.parse(response);
   generateQuizHTML(quizData);
 });
+
+// Provera podrške za navigator.userAgentData
+if (isUserAgentDataSupported()) {
+  console.log('navigator.userAgentData je podržan.');
+} else {
+  console.log('navigator.userAgentData nije podržan.');
+}
