@@ -1,46 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Kviz</title>
+  <script src="index.js"></script>
   <style>
-    .quiz-container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      background-color: #f9f9f9;
-      font-family: Arial, sans-serif;
-    }
-
     .question {
+      margin-bottom: 10px;
       font-weight: bold;
+    }
+    .options {
       margin-bottom: 10px;
     }
-
-    .options {
-      margin-bottom: 15px;
+    .options label {
+      display: block;
     }
-
-    .option {
-      margin-bottom: 5px;
+    .options input[type="radio"] {
+      margin-right: 5px;
     }
-
-    .submit-btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .submit-btn:hover {
-      background-color: #45a049;
+    .submit-button {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="quiz-container" id="quiz-container"></div>
+  <div id="quiz-container"></div>
 
-  <script src="index.js"></script>
+ 
 </body>
+
 </html>

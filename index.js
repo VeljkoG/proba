@@ -1,15 +1,13 @@
-// Funkcija za generisanje HTML koda kviz-pitanja
 function generateQuizHTML(quizData) {
   var quizContainer = document.getElementById("quiz-container");
   var html = "";
 
-  // Iteriraj kroz kviz-pitanja
   for (var questionKey in quizData.quiz) {
     if (quizData.quiz.hasOwnProperty(questionKey)) {
       var question = quizData.quiz[questionKey];
       html += '<div class="question">' + question.question + '</div>';
+      html += '<div class="options">';
 
-      // Generiši opcije za odgovor
       for (var i = 0; i < question.options.length; i++) {
         var option = question.options[i];
         var isChecked = localStorage.getItem(questionKey) === option ? 'checked' : '';
@@ -18,17 +16,14 @@ function generateQuizHTML(quizData) {
         html += '</label>';
       }
 
-      html += '<br><br>';
+      html += '</div><br>';
     }
   }
 
-  // Dodaj dugme za predaju kviza
-  html += '<button onclick="submitQuiz()">Submit</button>';
+  html += '<button class="submit-button" onclick="submitQuiz()">Submit</button>';
 
-  // Prikaz HTML koda u kontejneru
   quizContainer.innerHTML = html;
 
-  // Postavi event listenere na radio input elemente kako bismo pratili promene odgovora
   var radioInputs = quizContainer.querySelectorAll('input[type="radio"]');
   radioInputs.forEach(function (radioInput) {
     radioInput.addEventListener('change', function (event) {
@@ -38,7 +33,6 @@ function generateQuizHTML(quizData) {
     });
   });
 
-  // Postavi prethodno odabrane odgovore na osnovu lokalnog skladišta (local storage)
   for (var questionKey in quizData.quiz) {
     if (quizData.quiz.hasOwnProperty(questionKey)) {
       var selectedOption = localStorage.getItem(questionKey);
@@ -51,3 +45,44 @@ function generateQuizHTML(quizData) {
     }
   }
 }
+
+function saveAnswer(questionKey, selectedAnswer) {
+  localStorage.setItem(questionKey, selectedAnswer);
+}
+
+function submitQuiz() {
+  var userAnswers = {};
+
+  for (var questionKey in quizData.quiz) {
+    if (quizData.quiz.hasOwnProperty(questionKey)) {
+      var selectedOption = localStorage.getItem(questionKey);
+      userAnswers[questionKey] = selectedOption;
+    }
+  }
+
+  
+  localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+
+ 
+}
+
+
+
+function loadQuizData(callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.overrideMimeType("application/json");
+  xhr.open("GET", "kviz.json", true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var quizData = JSON.parse(xhr.responseText);
+      callback(quizData);
+    }
+  };
+  xhr.send(null);
+}
+
+
+
+loadQuizData(function (quizData) {
+  generateQuizHTML(quizData);
+});
